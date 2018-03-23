@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-SCRIPTS_DIR="$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")"
+SCRIPTS_DIR="$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")"/scripts
 source $SCRIPTS_DIR/avs-config.sh
 
 SENSORY_MODEL_HASH_1=a8befe708af1aa80c32bce5219312a4ec439a0b0
@@ -40,8 +40,7 @@ fi
 
 TIMES_FILE=$SCRIPTS_DIR/time_taken.txt
 SECONDS=0
-$SCRIPTS_DIR/i2s_i2c_setup.sh | sed "s/^/[audio setup] /"
-echo "audio-setup: $SECONDS" > $TIMES_FILE
+
 $SCRIPTS_DIR/avs-getdepbin.sh | sed "s/^/[apt-get dependencies] /"
 echo "apt-get deps: $SECONDS" >> $TIMES_FILE
 $SCRIPTS_DIR/avs-getdepsrc.sh | sed "s/^/[get sources] /"
@@ -50,13 +49,6 @@ $SCRIPTS_DIR/avs-portaudio.sh | sed "s/^/[portaudio] /"
 echo "portaudio: $SECONDS" >> $TIMES_FILE
 $SCRIPTS_DIR/avs-sensory.sh | sed "s/^/[sensory] /"
 echo "sensory: $SECONDS" >> $TIMES_FILE
-
-if [ -e /usr/share/alsa/pulse-alsa.conf ] ; then
-    # Rename existing file
-    sudo mv /usr/share/alsa/pulse-alsa.conf  /usr/share/alsa/pulse-alsa.conf.bak
-    sudo mv ~/.config/lxpanel/LXDE-pi/panels/panel ~/.config/lxpanel/LXDE-pi/panels/panel.bak
-fi
-
 $SCRIPTS_DIR/avs-getsdk.sh | sed "s/^/[sdk download] /"
 echo "getsdk: $SECONDS" >> $TIMES_FILE
 $SCRIPTS_DIR/avs-configsdk.sh | sed "s/^/[sdk config] /"
@@ -76,5 +68,3 @@ echo +++ avsmake
 echo +++ avsrun
 echo +++ avsunit
 echo +++ avsintegration
-echo To enable the i2s device, this pi must now be rebooted
-echo type 'sudo reboot' below to do this
