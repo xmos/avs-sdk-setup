@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 
-SCRIPTS_DIR="$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")"/scripts
+#let script exit if a command fails
+set -e
+#let script exit if an unsed variable is used
+set -u
+
+SCRIPTS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"/scripts
 source $SCRIPTS_DIR/avs-config.sh
 
 SENSORY_MODEL_HASH_1=a8befe708af1aa80c32bce5219312a4ec439a0b0
