@@ -1,6 +1,12 @@
-if [[ (! -z $SDK_CONFIG_CLIENT_ID) || (-e $SCRIPTS_DIR/AlexaClientSDKConfig.json) ]]; then
-    return
-fi
+#!/usr/bin/env bash
+SCRIPTS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+# Clear the user input variables
+unset SDK_CONFIG_CLIENT_ID
+unset SDK_CONFIG_CLIENT_SECRET
+unset SDK_CONFIG_PRODUCT_ID
+unset SDK_CONFIG_DEVICE_SERIAL_NUMBER
+unset SETTING_LOCALE_VALUE
 
 while [[ -z $SDK_CONFIG_CLIENT_ID ]] ; do
     echo "Enter your ClientId:"

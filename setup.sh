@@ -12,20 +12,15 @@ SENSORY_MODEL_HASH=$SENSORY_MODEL_HASH_2
 
 pushd . > /dev/null
 
-# Set environment variables and create folders
-grep avsrun ~/.bash_aliases > /dev/null 2>&1
-init_needed=$?
-if [ $init_needed != 0 ]; then
-    source $SCRIPTS_DIR/avs-init.sh
-fi
 
 mkdir -p $SOURCES_FOLDER
 mkdir -p $SDK_BUILD
 mkdir -p $THIRD_PARTY
 mkdir -p $SOUND_FILES
 
-# Prompt the user for settings at the start
-source $SCRIPTS_DIR/avs-userinput.sh
+
+# Set environment variables
+source $SCRIPTS_DIR/avs-init.sh
 
 # Clone sensory and complete license
 if [ ! -d $THIRD_PARTY/alexa-rpi ]; then
@@ -42,7 +37,7 @@ TIMES_FILE=$SCRIPTS_DIR/time_taken.txt
 SECONDS=0
 
 $SCRIPTS_DIR/avs-getdepbin.sh | sed "s/^/[apt-get dependencies] /"
-echo "apt-get deps: $SECONDS" >> $TIMES_FILE
+echo "apt-get deps: $SECONDS" > $TIMES_FILE
 $SCRIPTS_DIR/avs-getdepsrc.sh | sed "s/^/[get sources] /"
 echo "getsrc: $SECONDS" >> $TIMES_FILE
 $SCRIPTS_DIR/avs-portaudio.sh | sed "s/^/[portaudio] /"
@@ -68,3 +63,4 @@ echo +++ avsmake
 echo +++ avsrun
 echo +++ avsunit
 echo +++ avsintegration
+echo +++ avsauth
