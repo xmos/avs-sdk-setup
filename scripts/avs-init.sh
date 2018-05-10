@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-SCRIPTS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+pushd "$( dirname "${BASH_SOURCE[0]}" )" > /dev/null
+SCRIPTS_DIR="$( pwd )"
 source $SCRIPTS_DIR/avs-config.sh
 
 ALIASES=$HOME/.bash_aliases
@@ -14,3 +15,5 @@ echo "echo \"Available AVS aliases:\"" >> $ALIASES
 echo "echo -e \"\tavsmake, avsrun, avsunit, avsintegration, avsauth\"" >> $ALIASES
 echo "echo \"If authentication fails, please check $SDK_BUILD/Integration/AlexaClientSDKConfig.json\"" >> $ALIASES
 echo "echo \"remove .bash_aliases and open a new terminal to remove bindings\"" >> $ALIASES
+
+popd > /dev/null

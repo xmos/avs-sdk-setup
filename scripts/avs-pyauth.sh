@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-SCRIPTS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+pushd "$( dirname "${BASH_SOURCE[0]}" )" > /dev/null
+SCRIPTS_DIR="$( pwd )"
 source $SCRIPTS_DIR/avs-config.sh
 
 if [[ -e $SCRIPTS_DIR/AlexaClientSDKConfig.json ]]; then
@@ -26,13 +27,14 @@ cp $SDK_BUILD/Integration/AlexaClientSDKConfig.json $SCRIPTS_DIR/
 
 source $SCRIPTS_DIR/avs-autostart.sh
 
-cd $SDK_BUILD
+pushd $SDK_BUILD > /dev/null
 sudo fuser -k -TERM -n tcp 3000
 python AuthServer/AuthServer.py | grep -v '400' &
 chromium-browser http://localhost:3000 > /dev/null 2>&1
 wait
+popd > /dev/null
 
 echo
 echo "Auth details stored in $SDK_BUILD/Integration/AlexaClientSDKConfig.json"
 
-cd $HOME
+popd > /dev/null

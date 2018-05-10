@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-
-SCRIPTS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"/scripts
+pushd "$( dirname "${BASH_SOURCE[0]}" )" > /dev/null
+SCRIPTS_DIR="$( pwd )"/scripts
 source $SCRIPTS_DIR/avs-config.sh
 
 SENSORY_MODEL_HASH_1=a8befe708af1aa80c32bce5219312a4ec439a0b0
@@ -10,34 +10,33 @@ SENSORY_MODEL_HASH_3=43b5cb246cb8422a8f39ae92d3e372dc19b98243
 # Select Sensory version to use (default is 2)
 SENSORY_MODEL_HASH=$SENSORY_MODEL_HASH_2
 
-pushd . > /dev/null
-
-
 mkdir -p $SOURCES_FOLDER
 mkdir -p $SDK_BUILD
 mkdir -p $THIRD_PARTY
 mkdir -p $SOUND_FILES
-
 
 # Set environment variables
 source $SCRIPTS_DIR/avs-init.sh
 
 # Clone sensory and complete license
 if [ ! -d $THIRD_PARTY/alexa-rpi ]; then
-    cd $THIRD_PARTY
+    pushd $THIRD_PARTY > /dev/null
     git clone git://github.com/Sensory/alexa-rpi.git
-    cd alexa-rpi
+    pushd alexa-rpi > /dev/null
     git checkout $SENSORY_MODEL_HASH -- models/spot-alexa-rpi-31000.snsr
+    popd > /dev/null
+    popd > /dev/null
 fi
 if [ -e $THIRD_PARTY/alexa-rpi/bin/license.sh ]; then
     bash $THIRD_PARTY/alexa-rpi/bin/license.sh
 fi
 
 TIMES_FILE=$SCRIPTS_DIR/time_taken.txt
+rm -f $TIMES_FILE
 SECONDS=0
 
 $SCRIPTS_DIR/avs-getdepbin.sh | sed "s/^/[apt-get dependencies] /"
-echo "apt-get deps: $SECONDS" > $TIMES_FILE
+echo "apt-get deps: $SECONDS" >> $TIMES_FILE
 $SCRIPTS_DIR/avs-getdepsrc.sh | sed "s/^/[get sources] /"
 echo "getsrc: $SECONDS" >> $TIMES_FILE
 $SCRIPTS_DIR/avs-portaudio.sh | sed "s/^/[portaudio] /"

@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-SCRIPTS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+pushd "$( dirname "${BASH_SOURCE[0]}" )" > /dev/null
+SCRIPTS_DIR="$( pwd )"
 
 # Clear the user input variables
 unset SDK_CONFIG_CLIENT_ID
@@ -45,3 +46,5 @@ export SDK_TIMER_SHORT_SOUND_FILE_PATH=$SOUND_FILES/timer_short.wav
 export SDK_SQLITE_SETTINGS_DATABASE_FILE_PATH=$APPS_FILES/settings.db
 export SDK_CERTIFIED_SENDER_DATABASE_FILE_PATH=$APPS_FILES/certifiedSender.db
 export SDK_NOTIFICATIONS_DATABASE_FILE_PATH=$APPS_FILES/notifications.db
+
+popd > /dev/null
