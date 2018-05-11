@@ -1,12 +1,9 @@
 #!/usr/bin/env bash
-
-# Setup paths
-SCRIPTS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+pushd "$( dirname "${BASH_SOURCE[0]}" )" > /dev/null
+SCRIPTS_DIR="$( pwd )"
 source $SCRIPTS_DIR/avs-config.sh
 
-source $SCRIPTS_DIR/avs-userinput.sh
-
-cd $SDK_BUILD
+pushd $SDK_BUILD > /dev/null
 cmake $SDK_SRC \
   -DCMAKE_BUILD_TYPE=$BUILD_TYPE \
   -DSENSORY_KEY_WORD_DETECTOR=ON \
@@ -17,10 +14,6 @@ cmake $SDK_SRC \
   -DPORTAUDIO_LIB_PATH=$THIRD_PARTY/portaudio/lib/.libs/libportaudio.a \
   -DPORTAUDIO_INCLUDE_DIR=$THIRD_PARTY/portaudio/include
 
-if [ -e $SCRIPTS_DIR/AlexaClientSDKConfig.json ]; then
-    # If you have a cached copy, then use that
-    cp $SCRIPTS_DIR/AlexaClientSDKConfig.json $SDK_BUILD/Integration/AlexaClientSDKConfig.json
-else
-    # Else substitute the values and cache this copy
-    envsubst < $SDK_SRC/Integration/AlexaClientSDKConfig.json > $SDK_BUILD/Integration/AlexaClientSDKConfig.json
-fi
+popd > /dev/null
+
+popd > /dev/null

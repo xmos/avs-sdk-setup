@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
-
 # Setup paths
-SCRIPTS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+pushd "$( dirname "${BASH_SOURCE[0]}" )" > /dev/null
+SCRIPTS_DIR="$( pwd )"
 source $SCRIPTS_DIR/avs-config.sh
 
-cd $SDK_BUILD
+pushd $SDK_BUILD > /dev/null
 make -j2
+popd > /dev/null
+
+popd > /dev/null
